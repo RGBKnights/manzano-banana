@@ -1,4 +1,4 @@
-# manzano-peel
+# manzano-banana
 Frontend app for ChatGPT
 
 # Vue 3 + Vite
