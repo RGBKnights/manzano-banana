@@ -22,7 +22,7 @@ export const messageStore = defineStore("messageStore", {
       return state.collection.map((s, i) => ({ index: i, id: s.id, title: s.title }));
     },
     messages(state) {
-      return state.collection[state.active]?.messages?.filter(m => m.role != "system") ?? [];
+      return state.collection[state.active]?.messages ?? []; // ?.filter(m => m.role != "system")
     },
   },
   actions: {
