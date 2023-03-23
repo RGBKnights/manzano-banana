@@ -1,9 +1,7 @@
 <template>
-    <div class="user-message-text-box">
-      <!-- <input type="text" v-model="message" @keyup.enter="sendMessage" /> -->
-      <button type="button" @click="sendMessage">Add</button>
-    </div>
-  </template>
+    <input type="text" @keyup.enter="sendMessage" v-model="message" />
+    <button type="button" @click="sendMessage">Add</button>
+</template>
   
   <script>
   import { defineComponent, ref } from 'vue';
@@ -12,11 +10,11 @@
   export default defineComponent({
     name: 'UserMessageTextBox',
     setup() {
-
       const store = messageStore()
       const message = ref('');
       const sendMessage = () => {
-        store.increment()
+        store.addMessage(message.value);
+        message.value = "";
       };
   
       return { message, sendMessage };
@@ -25,8 +23,6 @@
   </script>
   
   <style scoped>
-  .user-message-text-box {
-    margin-top: 20px;
-  }
+
   </style>
   

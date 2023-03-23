@@ -1,26 +1,26 @@
 <template>
-    <div class="current-chat-viewport">
+    <!-- <div class="current-chat-viewport">
       <MessageHistory />
-    </div>
+    </div> -->
     
   </template>
   
   <script>
-  import { defineComponent } from 'vue';
-  import MessageHistory from './MessageHistory.vue';
+  // import { defineComponent } from 'vue';
+  // import MessageHistory from './MessageHistory.vue';
   
-  export default defineComponent({
-    name: 'CurrentChatViewport',
-    components: {
-      MessageHistory,
-    },
-  });
+  // export default defineComponent({
+  //   name: 'CurrentChatViewport',
+  //   components: {
+  //     MessageHistory,
+  //   },
+  // });
   </script>
   
   <style scoped>
-  .current-chat-viewport {
+  /* .current-chat-viewport {
     height: 400px;
     border: 1px solid black;
-  }
+  } */
   </style>
   

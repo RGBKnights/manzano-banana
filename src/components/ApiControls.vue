@@ -1,5 +1,5 @@
 <template>
-    <div class="api-controls">
+    <!-- <div class="api-controls">
       <label for="model-select">Model:</label>
       <select id="model-select" v-model="model" @change="changeModel">
         <option value="davinci">Davinci</option>
@@ -9,30 +9,21 @@
       </select>
       <label for="temperature-input">Temperature:</label>
       <input id="temperature-input" type="number" v-model="temperature" @change="changeTemperature" />
-    </div>
-  </template>
+    </div> -->
+
+    <div>{{count}}</div>
+</template>
   
   <script>
   import { defineComponent, ref } from 'vue';
-  import { usePinia } from 'pinia';
+  import { messageStore } from '../stores/messageStore.js';
+  import { mapWritableState } from 'pinia';
   
   export default defineComponent({
     name: 'ApiControls',
-    setup() {
-      const { state, actions } = usePinia();
-      const model = ref(state.model);
-      const temperature = ref(state.temperature);
-  
-      const changeModel = () => {
-        actions.changeModel(model.value);
-      };
-  
-      const changeTemperature = () => {
-        actions.changeTemperature(temperature.value);
-      };
-  
-      return { model, temperature, changeModel, changeTemperature };
-    },
+    computed: {
+      ...mapWritableState(messageStore,["count"])
+    }    
   });
   </script>
   
