@@ -1,8 +1,8 @@
 <template>
-  <div class="flex justify-center px-4 py-2">
+  <div v-if="isNotEmpty" class="flex justify-center">
     <div class="relative w-full">
-        <input @keyup.enter="sendMessage" v-model="message" type="input" id="chat" class="block w-full p-4  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <button @click="sendMessage" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <input @keyup.enter="sendMessage" v-model="message" type="input" id="chat" class="block w-full p-4  text-sm text-gray-900 border border-gray-500 rounded-lg bg-gray-50 focus:ring-amber-500 focus:border-amber-500 focus:ring-4 focus:outline-none focus:ring-amber-100">
+        <button @click="sendMessage" class="text-white absolute right-2.5 bottom-2.5  font-medium rounded-lg text-sm px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-500 hover:from-yellow-300 hover:to-yellow-500 ">
           <font-awesome-icon icon="fa-paper-plane" />
         </button>
     </div>
@@ -10,7 +10,8 @@
 </template>
   
   <script>
-  import { defineComponent, ref } from 'vue';
+  import { defineComponent, ref, nextTick  } from 'vue';
+  import { mapState } from 'pinia'
   import { messageStore } from '../stores/messageStore.js';
   
   export default defineComponent({
@@ -21,10 +22,16 @@
       const sendMessage = () => {
         store.addMessage(message.value);
         message.value = "";
+        nextTick(() => {
+          document.scrollIntoView({behavior: "smooth"});
+        })
       };
   
       return { message, sendMessage };
     },
+    computed: {
+    ...mapState(messageStore, ['isNotEmpty']),
+  },
   });
   </script>
   

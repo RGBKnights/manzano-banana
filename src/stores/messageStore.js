@@ -18,6 +18,9 @@ export const messageStore = defineStore("messageStore", {
     };
   },
   getters: {
+    isNotEmpty(state) {
+      return state.collection.length > 0;
+    },
     threads(state) {
       return state.collection.map((s, i) => ({ index: i, id: s.id, title: s.title }));
     },
@@ -44,6 +47,7 @@ export const messageStore = defineStore("messageStore", {
     },
     removeThread(id) {
       this.collection = this.collection.filter(t => t.id != id);
+      this.active = this.collection.length - 1;
     },
   }
 });
