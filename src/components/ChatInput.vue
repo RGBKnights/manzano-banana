@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import { defineComponent, ref, nextTick  } from 'vue';
+  import { defineComponent, ref  } from 'vue';
   import { mapState } from 'pinia'
   import { messageStore } from '../stores/messageStore.js';
   
@@ -23,9 +23,6 @@
       const sendMessage = () => {
         store.addMessage(message.value);
         message.value = "";
-        nextTick(() => {
-          document.scrollIntoView({behavior: "smooth"});
-        })
       };
   
       return { message, sendMessage };
