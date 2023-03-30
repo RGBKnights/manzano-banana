@@ -6,6 +6,7 @@ export const messageStore = defineStore("messageStore", {
   persist: true,
   state: () => {
     return { 
+      isBusy: false,
       user: uuid(),
       configuration: {},
       active: 0,
@@ -34,6 +35,7 @@ export const messageStore = defineStore("messageStore", {
       this.active = index;
     },
     async addMessage(content) {
+      this.isBusy = true;
       let messages = this.collection[this.active]?.messages;
       messages.push({"role": "user", "content": content});
       const body = {
@@ -42,6 +44,7 @@ export const messageStore = defineStore("messageStore", {
       };
       const {data} = await chatApi.post('/chat', body);
       messages.push(data.message);
+      this.isBusy = false;
     },
     addThread() {
       this.collection.push({ 
