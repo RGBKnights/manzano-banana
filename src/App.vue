@@ -19,7 +19,7 @@ import Threads from './components/Threads.vue'
         <ChatUser/>
       </div>
     </div>
-    <div class="h-full w-full flex flex-col  bg-slate-100">
+    <div class="h-full w-full flex flex-col bg-slate-100">
       <div class="flex-grow w-full p-4 overflow-auto">
         <ChatMessages/> 
       </div>
