@@ -1,11 +1,12 @@
 <template>
-  <div v-if="isNotEmpty" class="flex justify-center">
-    <div class="relative w-full">
-        <input @keyup.enter="sendMessage" v-model="message" type="input" id="chat" class="block w-full p-4  text-sm text-gray-900 border border-gray-500 rounded-lg bg-gray-50 focus:ring-amber-500 focus:border-amber-500 focus:ring-4 focus:outline-none focus:ring-amber-100">
-        <button @click="sendMessage" class="text-white absolute right-2.5 bottom-2.5  font-medium rounded-lg text-sm px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-500 hover:from-yellow-300 hover:to-yellow-500 ">
-          <font-awesome-icon icon="fa-paper-plane" />
-        </button>
-    </div>
+  <div class="h-full w-full">
+    <label class="relative block">
+      <span class="sr-only">Chat</span>
+      <span @click="sendMessage" class="absolute inset-y-0 right-0 flex items-center pr-2">
+        <font-awesome-icon icon="fa-paper-plane" />
+      </span>
+      <input @keyup.enter="sendMessage" v-model="message" type="input" id="chat" class="block bg-white w-full border border-slate-300 rounded-md py-2 pr-3 pl-2 pr-9 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm">
+    </label>
   </div>
 </template>
   

@@ -1,24 +1,20 @@
 <template>
-  <div class="flex flex-col justify-end py-20 h-screen">
-    <div class="overflow-y-scroll">
-    <template v-for="(message) of store.messages">
-    <div class="bg-transparent p-2">
-        <div class="flex border border-gray-500 rounded-lg shadow md:p-4 sm:p-2 bg-white">
-          <div class="flex-shrink-0 pr-4">
-              <img v-if="message.role == 'assistant'" class="w-8 h-8 rounded-full" src="https://via.placeholder.com/100x100/000000/ffffff?text=Ai" alt="Ai">
-              <img v-else-if="message.role == 'user'" class="w-8 h-8 rounded-full" src="https://via.placeholder.com/100x100/f0f0f0/2e2e2e?text=Me" alt="user">
-              <img v-else class="w-8 h-8 rounded-full" src="https://via.placeholder.com/100x100/f0f0f0/2e2e2e?text=Me" alt="system">
+  <template v-for="(message) of store.messages">
+    <div class="p-4 mt-2 bg-white border border-gray-200 rounded-lg shadow">
+      <div class="flex items-center space-x-4">
+          <div class="flex-shrink-0">
+            <img v-if="message.role == 'system'" class="w-8 h-8 rounded-full border" src="https://via.placeholder.com/100x100/000000/ffffff?text=Ai" alt="Ai">
+            <img v-if="message.role == 'assistant'" class="w-8 h-8 rounded-full border" src="https://via.placeholder.com/100x100/000000/ffffff?text=Ai" alt="Ai">
+            <img v-if="message.role == 'user'" class="w-8 h-8 rounded-full border" src="https://via.placeholder.com/100x100/ffffff/000000?text=Me" alt="Me">
           </div>
           <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-gray-900 truncate">
-                {{ message.content  }}
-              </p>
+            <p class="text-sm text-gray-500 truncate">
+              {{message.content}}
+            </p>
           </div>
         </div>
     </div>
-    </template>
-    </div>
-  </div>
+  </template>
 </template>
 
 <script>
@@ -39,3 +35,4 @@ export default defineComponent({
 
 <style scoped>
 </style>
+

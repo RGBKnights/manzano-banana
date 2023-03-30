@@ -10,7 +10,7 @@ export const messageStore = defineStore("messageStore", {
       active: 0,
       collection: [{ 
         id: uuid(), 
-        title: "New Chat", 
+        title: "Chat 1", 
         messages: [
           {"role": "system", "content": "You are helpful assistant."}
         ] 
@@ -38,7 +38,7 @@ export const messageStore = defineStore("messageStore", {
     addThread() {
       this.collection.push({ 
         id: uuid(), 
-        title: "New Chat +", 
+        title: "Chat " + (this.collection.length + 1),
         messages: [
           {"role": "system", "content": "You are helpful assistant."}
         ] 
