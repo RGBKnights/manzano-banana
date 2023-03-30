@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import { v4 as uuid } from 'uuid';
+import { chatApi } from "../apis/chat"
 
 export const messageStore = defineStore("messageStore", {
   persist: true,
   state: () => {
     return { 
-      id: uuid(),
+      user: uuid(),
       configuration: {},
       active: 0,
       collection: [{ 
@@ -25,15 +26,22 @@ export const messageStore = defineStore("messageStore", {
       return state.collection.map((s, i) => ({ index: i, id: s.id, title: s.title }));
     },
     messages(state) {
-      return state.collection[state.active]?.messages ?? []; // ?.filter(m => m.role != "system")
+      return state.collection[state.active]?.messages?.filter(m => m.role != "system") ?? [];
     },
   },
   actions: {
     changeThread(index) {
       this.active = index;
     },
-    addMessage(content) {
-      this.collection[this.active]?.messages.push({"role": "user", "content": content});
+    async addMessage(content) {
+      let messages = this.collection[this.active]?.messages;
+      messages.push({"role": "user", "content": content});
+      const body = {
+        user: this.user,
+        history: messages
+      };
+      const {data} = await chatApi.post('/chat', body);
+      messages.push(data.message);
     },
     addThread() {
       this.collection.push({ 
