@@ -8,7 +8,7 @@
             <img v-if="message.role == 'user'" class="w-8 h-8 rounded-md border" src="https://via.placeholder.com/100x100/ffffff/000000?text=Me" alt="Me">
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-sm text-gray-500 truncate">
+            <p class="text-sm text-gray-500 break-all">
               {{message.content}}
             </p>
           </div>
