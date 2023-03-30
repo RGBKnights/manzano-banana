@@ -8,7 +8,7 @@ import Threads from './components/Threads.vue'
 
 <template>
   <div class="flex h-full w-full">
-    <div class="w-60 h-full p-2 bg-slate-500 text-white">
+    <div class="w-60 h-full p-2 bg-slate-700 text-white">
       <div >
         <ChatHeader />
       </div>

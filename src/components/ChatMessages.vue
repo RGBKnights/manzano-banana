@@ -3,9 +3,9 @@
     <div class="p-4 mt-2 bg-white border border-gray-200 rounded-lg shadow">
       <div class="flex items-center space-x-4">
           <div class="flex-shrink-0">
-            <img v-if="message.role == 'system'" class="w-8 h-8 rounded-full border" src="https://via.placeholder.com/100x100/000000/ffffff?text=Ai" alt="Ai">
-            <img v-if="message.role == 'assistant'" class="w-8 h-8 rounded-full border" src="https://via.placeholder.com/100x100/000000/ffffff?text=Ai" alt="Ai">
-            <img v-if="message.role == 'user'" class="w-8 h-8 rounded-full border" src="https://via.placeholder.com/100x100/ffffff/000000?text=Me" alt="Me">
+            <img v-if="message.role == 'system'" class="w-8 h-8 rounded-md border" src="https://i.imgur.com/eiMpBqJ.png" alt="Ai">
+            <img v-if="message.role == 'assistant'" class="w-8 h-8 rounded-md border" src="https://i.imgur.com/eiMpBqJ.png" alt="Ai">
+            <img v-if="message.role == 'user'" class="w-8 h-8 rounded-md border" src="https://via.placeholder.com/100x100/ffffff/000000?text=Me" alt="Me">
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm text-gray-500 truncate">
