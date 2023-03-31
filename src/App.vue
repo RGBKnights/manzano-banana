@@ -20,7 +20,7 @@ import Threads from './components/Threads.vue'
       </div>
     </div>
     <div class="h-full w-full flex flex-col bg-slate-100">
-      <div class=" w-full p-4 h-5/6 overflow-y-scroll overflow-x-hidden">
+      <div class="w-full p-4 h-5/6 overflow-y-scroll overflow-x-hidden">
         <ChatMessages/> 
       </div>
       <div class="h-16 w-full h-1/6 p-4">
