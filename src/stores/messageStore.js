@@ -29,6 +29,9 @@ export const messageStore = defineStore("messageStore", {
     messages(state) {
       return state.collection[state.active]?.messages?.filter(m => m.role != "system") ?? [];
     },
+    files(state) {
+      return state.collection[state.active]?.files?.filter(m => m.role != "system") ?? [];
+    },
   },
   actions: {
     changeThread(index) {

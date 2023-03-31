@@ -11,7 +11,7 @@
           </div>
           <div class="flex-none opacity-0 hover:opacity-100">
             <div class="inline-flex rounded-md shadow-sm">
-              <button  type="button" class="px-2 text-xs font-small text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 ">
+              <button  type="button" @click="editThreadName" class="px-2 text-xs font-small text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 ">
                 <font-awesome-icon icon="fa-solid fa-pen" />
               </button>
               <button @click="store.removeThread(t.id)" type="button" class="px-2  text-xs font-small text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700">
@@ -26,13 +26,21 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
 import { messageStore } from "../stores/messageStore.js";
+
+
+
+
 const store = messageStore();
 onMounted(() => {
   initFlowbite();
-})
+});
+
+
+  
+
 </script>
 
 <style scoped></style>
