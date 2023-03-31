@@ -1,18 +1,7 @@
 <template>
   <div class="container mx-auto">
-    <template v-for="message of store.messages">
-      <div class="p-4 mt-2 bg-white border border-gray-200 rounded-lg shadow">
-        <div class="flex space-x-4">
-          <div class="flex-shrink-0 w-8">
-            <img v-if="message.role == 'system'" class="w-8 h-8 rounded-md border" src="https://i.imgur.com/eiMpBqJ.png" alt="Ai" />
-            <img v-if="message.role == 'assistant'" class="w-8 h-8 rounded-md border" src="https://i.imgur.com/eiMpBqJ.png" alt="Ai" />
-            <img v-if="message.role == 'user'" class="w-8 h-8 rounded-md border" src="https://via.placeholder.com/100x100/ffffff/000000?text=Me" alt="Me" />
-          </div>
-          <div class="flex-1 min-w-0">
-            <MdEditor v-model="message.content" previewOnly />
-          </div>
-        </div>
-      </div>
+    <template v-for="(message) of messages">
+      <ChatMessage :message="message"></ChatMessage>
     </template>
     <div v-if="isBusy" class="p-4 mt-2 bg-white border border-gray-200 rounded-lg shadow">
       <div class="flex space-x-4">
@@ -57,46 +46,34 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { messageStore } from "../stores/messageStore.js";
 import { mapState } from "pinia";
-import MdEditor from "md-editor-v3";
-import "md-editor-v3/lib/style.css";
+import ChatMessage from "./ChatMessage.vue"
 
 export default defineComponent({
   name: "ChatMessages",
   setup() {
-    const store = messageStore();
-    const changeThread = () => {
-      store.changeThread(i);
-    };
-    return { store, changeThread };
+    return { };
   },
   updated() {
     this.$nextTick(() => this.scrollToEnd());
   },
   computed: {
+    ...mapState(messageStore, ["messages"]),
     ...mapState(messageStore, ["isBusy"]),
   },
   components: {
-    MdEditor,
+    ChatMessage
   },
   methods: {
     scrollToEnd: function () {
-      console.log("scroll");
-      window.scrollTo(
-        {
-          top: document.body.scrollHeight,
-          left: 0,
-          behavior: "smooth"
-        }
-      );
     },
   },
 });
 </script>
 
-<style lang="postcss">
+<style scoped lang="postcss">
 a {
   @apply font-medium text-blue-600 dark:text-blue-500 hover:underline;
 }

@@ -14,7 +14,7 @@ export const messageStore = defineStore("messageStore", {
         id: uuid(), 
         title: "Chat 1", 
         messages: [
-          {"role": "system", "content": "You are helpful assistant."}
+          {"role": "system", "content": "You are helpful assistant." }
         ] 
       }]
     };
