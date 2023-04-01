@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto" >
     <template v-for="(message, i) of messages">
       <ChatMessage :message="message" :index="i"></ChatMessage>
     </template>
@@ -45,32 +45,27 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
+<script setup>
+import { ref, computed, watch, nextTick } from "vue";
 import { messageStore } from "../stores/messageStore.js";
-import { mapState } from "pinia";
 import ChatMessage from "./ChatMessage.vue"
 
-export default defineComponent({
-  name: "ChatMessages",
-  setup() {
-    return { };
-  },
-  updated() {
-    this.$nextTick(() => this.scrollToEnd());
-  },
-  computed: {
-    ...mapState(messageStore, ["messages"]),
-    ...mapState(messageStore, ["isBusy"]),
-  },
-  components: {
-    ChatMessage
-  },
-  methods: {
-    scrollToEnd: function () {
-    },
-  },
-});
+const store = messageStore();
+
+const messages = computed(() => {
+  return store.messages
+})
+
+const isBusy = computed(() => {
+  return store.isBusy
+})
+
+watch(messages, async (n,o) => {
+  try {
+    await nextTick();
+    document.querySelector('.msg-card:last').scrollIntoView(false);
+  } catch (error) {}
+})
 </script>
 
 <style scoped >

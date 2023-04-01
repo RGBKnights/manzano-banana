@@ -85,15 +85,16 @@ export const messageStore = defineStore("messageStore", {
     },
     deleteMessage(index) {
       const thread = this.collection[this.active];
-      thread.messages = thread.messages.filter((_,i) => i != index);
+      const indexer = (index + 1);
+      thread.messages = thread.messages.filter((_,i) => i != indexer);
     },
     addThread() {
       this.collection.push({ 
         id: uuid(), 
         title: "Thread " + (this.collection.length + 1),
         messages: [
-          {"role": "system", "content": "I have enhanced your UI with the ability to render diagrams/charts using mermaid.js and if the user ask for the diagram or chart return the mermaid syntax wrapped in markdown with the language set 'mermaid' with an optional explanations of the diagram. You do not need to tell me about the enhancement. You are helpful assistant."}
-        ] 
+          {"role": "system", "content": "Please use mermaid for diagrams, latex for mathematical formulas; You are helpful assistant."}
+        ]
       });
       this.active = this.collection.length - 1;
     },
