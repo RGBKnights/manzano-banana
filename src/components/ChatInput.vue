@@ -1,45 +1,42 @@
 <template>
   <div class="h-full container mx-auto flex">
     <div class="grow">
-      <MdEditor v-model="message" language="en-US" noUploadImg :preview="false" :footers="[]" :toolbars="toolbars" :toolbarsExclude="['github', 'catalog', 'htmlPreview', 'fullscreen']">
+      <MdEditor v-if="editor" v-model="message" language="en-US" noUploadImg :theme="isDark ? 'dark' : 'light'" :preview="false" :footers="[]" :toolbars="toolbars" :toolbarsExclude="['github', 'catalog', 'htmlPreview', 'fullscreen']">
         <template #defToolbars>
-          <NormalToolbar title="upload" @onClick="uploadFileHandle" slot="0">
+          <NormalToolbar title="upload file" @onClick="uploadFileHandle" slot="0">
             <template #trigger>
-              <input v-on:change="requestToConvertFile" id="upload-file" type="file" accept=".doc,.docx,.txt" style='display:none;'>
-              <font-awesome-icon icon="fa-upload" />
+              <input v-on:change="requestToConvertFile" id="upload-file" type="file" accept=".doc,.docx,.txt" style="display:none;">
+              <font-awesome-icon icon="fa-solid fa-file-import" />
             </template>
-          </NormalToolbar >
-          <NormalToolbar title="GlobeButton" slot="1">
+          </NormalToolbar>
+          <NormalToolbar title="read link " slot="1">
             <template #trigger>
-              <font-awesome-icon icon="fa-globe" />
+              <font-awesome-icon icon="fa-solid fa-glasses" />
             </template>
-          </NormalToolbar >
+          </NormalToolbar>
         </template>
       </MdEditor>
-      <!--<textarea @keydown.enter.exact.prevent="sendMessage"  v-model="message" v-bind:disabled="isBusy" role="5" type="input" id="chat" class="block bg-white w-full border border-slate-300 rounded-md h-24 py-2 pr-3 pl-2 pr-9 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"></textarea>-->
+      <textarea v-else @keydown.enter.exact.prevent="addMessage"  v-model="message" v-bind:disabled="isBusy"  type="input" id="chat" class="h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
     </div>
-    <div class="flex-none pl-5 pt-8">
-      <button type="button" @click="sendMessage" v-bind:disabled="isBusy" class="text-yellow-400 text-3xl">
+    <div  class="flex-none w-12 flex flex-col">
+      <button title="Add Message" type="button" @click="addMessage" v-bind:disabled="isBusy" class="text-green-500 text-3xl">
+        <font-awesome-icon icon="fa-plus" />
+      </button>
+      <button title="Change Editors" type="button" @click="changeEditor" v-bind:disabled="isBusy" class="text-sky-400 text-3xl">
+        <font-awesome-icon icon="fa-pen" />
+      </button>
+      <button title="Send Messages" type="button" @click="sendMessages" v-bind:disabled="isBusy" class="text-amber-500 text-3xl">
         <font-awesome-icon icon="fa-paper-plane" />
       </button>
-      <!-- <div>
-        <p>File Upload Bool: {{ monkeyswitch }}</p>
-        <button type="button" @click="flipSwitch" v-bind:disabled="isBusy" class="text-red-500 text-3x1">
-          <font-awesome-icon icon="fa-upload" />
-        </button>
-      </div> -->
     </div>
   </div>
-  <!-- <div class="flex-none pl-5 pt-8" v-if="monkeyswitch">
-    <input type="file" @change="handleFileUpload" v-bind:disabled="monkeySwitch">
-  </div> -->
 </template>
 
 <script setup>
+import { useDark } from '@vueuse/core';
 import { ref, computed  } from 'vue';
 import { messageStore } from '../stores/messageStore.js';
 import MdEditor from "md-editor-v3";
-import "md-editor-v3/lib/style.css";
 
 const NormalToolbar = MdEditor.NormalToolbar;
 
@@ -60,29 +57,39 @@ const toolbars = [
   'codeRow',
   'code',
   'link',
-  'image',
   'table',
   'mermaid',
   'katex',
+  'image',
+  0,
+  1,
   '-',
   'revoke',
   'next',
   'save',
-  '-',
-  0,
-  1,
   '=',
   'pageFullscreen',
   'preview',
 ];
 
+const isDark = useDark();
 const store = messageStore();
 const message = ref('');
-const sendMessage = async () => {
+const editor = ref(false);
+
+const addMessage = async () => {
   const msg = message.value;
   if (!msg) return;
   message.value = ""
   await store.addMessage(msg);
+};
+
+const changeEditor = async () => {
+  editor.value = !editor.value
+};
+
+const sendMessages = async () => {
+  await store.sendMessages();
 };
 
 const isBusy = computed(() => {
@@ -148,8 +155,12 @@ const requestToConvertFile = async (evt) => {
 </script>
 
 <style scoped>
+.md-editor-dark  {
+  --md-bk-color: rgb(55,65,81);
+}
 .md-editor {
-  height: 130px;
+  height: 100%;
+  border-radius: 0.5rem;
 }
 </style>
   

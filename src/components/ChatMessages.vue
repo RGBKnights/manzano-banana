@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
-    <template v-for="(message) of messages">
-      <ChatMessage :message="message"></ChatMessage>
+    <template v-for="(message, i) of messages">
+      <ChatMessage :message="message" :index="i"></ChatMessage>
     </template>
     <div v-if="isBusy" class="p-4 mt-2 bg-white border border-gray-200 rounded-lg shadow">
       <div class="flex space-x-4">
@@ -73,12 +73,5 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="postcss">
-a {
-  @apply font-medium text-blue-600 dark:text-blue-500 hover:underline;
-}
-p {
-  @apply pb-1;
-  word-break: break-word;
-}
+<style scoped >
 </style>
