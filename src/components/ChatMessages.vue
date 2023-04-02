@@ -1,7 +1,7 @@
 <template>
-  <div class="container mx-auto">
-    <template v-for="(message) of messages">
-      <ChatMessage :message="message"></ChatMessage>
+  <div class="container mx-auto" >
+    <template v-for="(message, i) of messages">
+      <ChatMessage :message="message" :index="i"></ChatMessage>
     </template>
     <div v-if="isBusy" class="p-4 mt-2 bg-white border border-gray-200 rounded-lg shadow">
       <div class="flex space-x-4">
@@ -45,40 +45,28 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
+<script setup>
+import { ref, computed, watch, nextTick } from "vue";
 import { messageStore } from "../stores/messageStore.js";
-import { mapState } from "pinia";
 import ChatMessage from "./ChatMessage.vue"
 
-export default defineComponent({
-  name: "ChatMessages",
-  setup() {
-    return { };
-  },
-  updated() {
-    this.$nextTick(() => this.scrollToEnd());
-  },
-  computed: {
-    ...mapState(messageStore, ["messages"]),
-    ...mapState(messageStore, ["isBusy"]),
-  },
-  components: {
-    ChatMessage
-  },
-  methods: {
-    scrollToEnd: function () {
-    },
-  },
-});
+const store = messageStore();
+
+const messages = computed(() => {
+  return store.messages
+})
+
+const isBusy = computed(() => {
+  return store.isBusy
+})
+
+watch(messages, async (n,o) => {
+  try {
+    await nextTick();
+    document.querySelector('.msg-card:last').scrollIntoView(false);
+  } catch (error) {}
+})
 </script>
 
-<style scoped lang="postcss">
-a {
-  @apply font-medium text-blue-600 dark:text-blue-500 hover:underline;
-}
-p {
-  @apply pb-1;
-  word-break: break-word;
-}
+<style scoped >
 </style>

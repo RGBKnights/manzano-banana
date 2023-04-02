@@ -1,5 +1,5 @@
 <template>
- <div class="">
+ <div class="py-2 pl-2">
   <ul v-for="(t, i) of store.threads" class="">
       <li>
         <div class="flex h-6">
@@ -26,21 +26,8 @@
 </template>
 
 <script setup>
-import { defineComponent, onMounted } from 'vue'
-import { initFlowbite } from 'flowbite'
 import { messageStore } from "../stores/messageStore.js";
-
-
-
-
 const store = messageStore();
-onMounted(() => {
-  initFlowbite();
-});
-
-
-  
-
 </script>
 
 <style scoped></style>
