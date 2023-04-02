@@ -1,7 +1,27 @@
 <template>
   <div class="h-full container mx-auto flex">
-    <div class="grow">
-      <MdEditor v-if="editor" v-model="message" language="en-US" noUploadImg :theme="isDark ? 'dark' : 'light'" :preview="false" :footers="[]" :toolbars="toolbars" :toolbarsExclude="['github', 'catalog', 'htmlPreview', 'fullscreen']">
+    <div v-if="editor == 0" class="grow flex">
+      <div class="flex flex-col justify-center pr-2 w-12">
+        <button title="Whisper" type="button" @click="changeEditor" v-bind:disabled="isBusy" class="text-sky-400  text-3xl pr-2">
+          
+          <font-awesome-icon icon="fa-brands fa-markdown" />
+        </button>
+      </div>
+      <textarea  @keydown.enter.exact.prevent="addMessage"  v-model="message" v-bind:disabled="isBusy"  type="input" id="chat" class="h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+      <div class="flex-none w-12 flex flex-col justify-center">
+        <button title="Send Messages" type="button" @click="sendMessages" v-bind:disabled="isBusy" class="text-amber-500 text-3xl">
+          <font-awesome-icon icon="fa-paper-plane" />
+        </button>
+      </div>
+      
+    </div>
+    <div v-if="editor == 1" class="grow flex">
+      <div class="flex flex-col justify-center pr-2 w-12">
+        <button title="Change Editors" type="button" @click="changeEditor" v-bind:disabled="isBusy" class="text-sky-400 text-3xl">
+          <font-awesome-icon icon="fa-solid fa-microphone" />
+        </button>
+      </div>
+      <MdEditor  v-model="message" language="en-US" noUploadImg :theme="isDark ? 'dark' : 'light'" :preview="false" :footers="[]" :toolbars="toolbars" :toolbarsExclude="['github', 'catalog', 'htmlPreview', 'fullscreen']">
         <template #defToolbars>
           <NormalToolbar title="upload file" @onClick="uploadFileHandle" slot="0">
             <template #trigger>
@@ -16,18 +36,31 @@
           </NormalToolbar>
         </template>
       </MdEditor>
-      <textarea v-else @keydown.enter.exact.prevent="addMessage"  v-model="message" v-bind:disabled="isBusy"  type="input" id="chat" class="h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+      <div class="flex-none w-12 flex flex-col justify-center">
+        <button title="Send Messages" type="button" @click="sendMessages" v-bind:disabled="isBusy" class="text-amber-500 text-3xl">
+          <font-awesome-icon icon="fa-paper-plane" />
+        </button>
+      </div>
     </div>
-    <div  class="flex-none w-12 flex flex-col">
-      <button title="Add Message" type="button" @click="addMessage" v-bind:disabled="isBusy" class="text-green-500 text-3xl">
-        <font-awesome-icon icon="fa-plus" />
-      </button>
-      <button title="Change Editors" type="button" @click="changeEditor" v-bind:disabled="isBusy" class="text-sky-400 text-3xl">
-        <font-awesome-icon icon="fa-pen" />
-      </button>
-      <button title="Send Messages" type="button" @click="sendMessages" v-bind:disabled="isBusy" class="text-amber-500 text-3xl">
-        <font-awesome-icon icon="fa-paper-plane" />
-      </button>
+    <div v-if="editor == 2" class="grow flex">
+      <div class="flex flex-col justify-center pr-2 w-12">
+        <button title="Change Editors" type="button" @click="changeEditor" v-bind:disabled="isBusy" class="text-sky-400 text-3xl">
+          <font-awesome-icon icon="fa-solid fa-pen" />
+        </button>
+      </div>
+      <div class="w-full h-full flex justify-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <button v-if="recording"  title="Whisper" type="button" v-bind:disabled="isBusy" class="text-slate-300 text-3xl pr-2">
+          <font-awesome-icon icon="fa-solid fa-circle-stop" />
+        </button>
+        <button v-else itle="Whisper" type="button" v-bind:disabled="isBusy" class="text-red-400 text-3xl pr-2">
+          <font-awesome-icon icon="fa-solid fa-circle" />
+        </button>
+      </div>
+      <div class="flex-none w-12 flex flex-col justify-center">
+        <button title="Send Messages" type="button" @click="sendMessages" v-bind:disabled="isBusy" class="text-amber-500 text-3xl">
+          <font-awesome-icon icon="fa-paper-plane" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -75,20 +108,34 @@ const toolbars = [
 const isDark = useDark();
 const store = messageStore();
 const message = ref('');
-const editor = ref(false);
+const recording = ref(false);
+const editor = ref(0);
 
-const addMessage = async () => {
+const addMessage = () => {
   const msg = message.value;
   if (!msg) return;
   message.value = ""
-  await store.addMessage(msg);
+  store.addMessage(msg);
 };
 
 const changeEditor = async () => {
-  editor.value = !editor.value
+  switch (editor.value) {
+    case 0:
+      editor.value = 1;
+      break;
+    case 1:
+      editor.value = 2;
+      break;
+    case 2:
+      editor.value = 0
+      break;
+    default:
+      break;
+  }
 };
 
 const sendMessages = async () => {
+  addMessage();
   await store.sendMessages();
 };
 
