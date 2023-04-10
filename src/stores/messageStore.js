@@ -10,13 +10,7 @@ export const messageStore = defineStore("messageStore", {
       user: uuid(),
       configuration: {},
       active: 0,
-      collection: [{ 
-        id: uuid(), 
-        title: "Thread 1", 
-        messages: [
-          {"role": "system", "content": "You are helpful assistant." }
-        ] 
-      }]
+      collection: []
     };
   },
   getters: {
@@ -93,10 +87,14 @@ export const messageStore = defineStore("messageStore", {
         id: uuid(), 
         title: "Thread " + (this.collection.length + 1),
         messages: [
-          {"role": "system", "content": "Please use mermaid for diagrams, latex for mathematical formulas; You are helpful assistant."}
+          {"role": "system", "content": "I have upgrade your user interface to render markdown. Your output should use it for text formatting, links, tables, images, mermaid syntax for diagrams, and latex syntax for mathematical formulas. You are helpful assistant."}
         ]
       });
       this.active = this.collection.length - 1;
+    },
+    changeName(data) {
+      const { index, name } = data;
+      this.collection[index].title = name;
     },
     removeThread(id) {
       this.collection = this.collection.filter(t => t.id != id);

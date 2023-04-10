@@ -49,12 +49,7 @@
         </button>
       </div>
       <div class="w-full h-full flex justify-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <button v-if="recording"  title="Whisper" type="button" v-bind:disabled="isBusy" class="text-slate-300 text-3xl pr-2">
-          <font-awesome-icon icon="fa-solid fa-circle-stop" />
-        </button>
-        <button v-else itle="Whisper" type="button" v-bind:disabled="isBusy" class="text-red-400 text-3xl pr-2">
-          <font-awesome-icon icon="fa-solid fa-circle" />
-        </button>
+        <ChatRecorder :isBusy="isBusy"></ChatRecorder>
       </div>
       <div class="flex-none w-12 flex flex-col justify-center">
         <button title="Send Messages" type="button" @click="sendMessages" v-bind:disabled="isBusy" class="text-amber-500 text-3xl">
@@ -69,6 +64,7 @@
 import { useDark } from '@vueuse/core';
 import { ref, computed  } from 'vue';
 import { messageStore } from '../stores/messageStore.js';
+import ChatRecorder from "./ChatRecorder.vue"
 import MdEditor from "md-editor-v3";
 
 const NormalToolbar = MdEditor.NormalToolbar;
@@ -108,7 +104,6 @@ const toolbars = [
 const isDark = useDark();
 const store = messageStore();
 const message = ref('');
-const recording = ref(false);
 const editor = ref(0);
 
 const addMessage = () => {
