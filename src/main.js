@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faPaperPlane, faPlus, faComments, faXmark, faList, faPen, faFileImport, faGlasses, faUser, faTrashCan, faCircleHalfStroke, faMicrophone, faCircle, faCircleStop  } from '@fortawesome/free-solid-svg-icons'
+import { faPaperPlane, faPlus, faComments, faXmark, faList, faPen, faFileImport, faGlasses, faUser, faTrashCan, faCircleHalfStroke, faMicrophone, faCircle, faCircleStop, faCirclePlay } from '@fortawesome/free-solid-svg-icons'
 import { faMarkdown } from '@fortawesome/free-brands-svg-icons'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
@@ -25,6 +25,7 @@ library.add(faMicrophone);
 library.add(faCircle);
 library.add(faCircleStop);
 library.add(faMarkdown);
+library.add(faCirclePlay);
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
