@@ -1,5 +1,5 @@
 <template>
- <div class="py-2 pl-2 scrollable">
+ <div class="py-2 pl-2">
   <ul v-for="(t, i) of store.threads" class="">
       <li>
         <div class="flex h-6">
@@ -35,19 +35,9 @@ function editThreadName(index, title) {
 }
 
 async function changeThread(index) {
-  try {
-    store.changeThread(index);
-    setTimeout(() => {
-      document.querySelector('.msg-container:last-child').scrollIntoView(false);
-    }, 1000);
-  } catch (error) {
-    console.log("changeThread", error);
-  }
+  store.changeThread(index);
 }
 </script>
 
 <style scoped>
-.scrollable {
-   overflow-y: scroll;
-}
 </style>

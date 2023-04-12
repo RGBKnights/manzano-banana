@@ -50,9 +50,6 @@ const changeRole = () => {
 .md-editor-dark  {
   --md-bk-color: rgb(55,65,81);
 }
-.scrollable {
-   overflow-y: scroll;
-}
 .msg-card:hover .commands {
   visibility: visible;
 }
