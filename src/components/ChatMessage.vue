@@ -1,6 +1,6 @@
 <template>
  <div class="msg-card p-4 mt-2 bg-white border border-gray-200 rounded-lg shadow relative dark:bg-gray-700 dark:border-gray-600">
-  <div class="flex space-x-4">
+  <div class="flex space-x-4 scrollable">
     <div class="flex-shrink-0 w-8">
       <img v-if="message.role === 'system'" class="w-8 h-8 rounded-md border dark:border-gray-600" src="https://i.imgur.com/eiMpBqJ.png" alt="System" />
       <img v-if="message.role === 'assistant'" @click="changeRole" class="w-8 h-8 rounded-md border dark:border-gray-600" src="https://via.placeholder.com/100x100/ffffff/000000?text=Ai" alt="Ai" />
@@ -51,6 +51,9 @@ const changeRole = () => {
 <style scoped>
 .md-editor-dark  {
   --md-bk-color: rgb(55,65,81);
+}
+.scrollable {
+   overflow-y: scroll;
 }
 .msg-card:hover .commands {
   visibility: visible;

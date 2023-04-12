@@ -1,5 +1,5 @@
 <template>
- <div class="py-2 pl-2">
+ <div class="py-2 pl-2 scrollable">
   <ul v-for="(t, i) of store.threads" class="">
       <li>
         <div class="flex h-6">
@@ -30,4 +30,8 @@ import { messageStore } from "../stores/messageStore.js";
 const store = messageStore();
 </script>
 
-<style scoped></style>
+<style scoped>
+.scrollable {
+   overflow-y: scroll;
+}
+</style>
