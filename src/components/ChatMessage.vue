@@ -46,8 +46,6 @@ const changeRole = () => {
 
 </script>
 
-<!-- TODO: File upload Excel, Word, Txt, markdown, PDF -->
-
 <style scoped>
 .md-editor-dark  {
   --md-bk-color: rgb(55,65,81);
