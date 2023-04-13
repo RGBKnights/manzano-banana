@@ -29,7 +29,7 @@
               <font-awesome-icon icon="fa-solid fa-file-import" />
             </template>
           </NormalToolbar>
-          <NormalToolbar title="read webpage" slot="1">
+          <NormalToolbar title="read webpage" @onClick="readWebPage" slot="1">
             <template #trigger>
               <font-awesome-icon icon="fa-solid fa-glasses" />
             </template>
@@ -66,6 +66,7 @@
 import { useDark } from '@vueuse/core';
 import { ref, computed  } from 'vue';
 import { messageStore } from '../stores/messageStore.js';
+import { fetchApi } from "../apis/chat"
 import ChatRecorder from "./ChatRecorder.vue"
 import MdEditor from "md-editor-v3";
 import mammoth from "mammoth/mammoth.browser";
@@ -144,6 +145,16 @@ const isBusy = computed(() => {
   return store.isBusy
 })
 
+const readWebPage = async () => {
+  try {
+    const url = prompt("Please enter a url")
+    const response = await fetchApi.get(`/fetch?url=${encodeURIComponent(url)}`)
+    message.value = response.data
+  } catch (error) {
+    console.log('readWebPage', error);
+  }
+}
+
 const uploadFileHandle = () => {
   const el = document.getElementById('upload-file');
   el.click();
@@ -156,7 +167,6 @@ const requestToConvertFile = async (evt) => {
       case 'text/plain':
         {
           message.value = await readAsText(file)
-          editor.value = 0
           break
         }
       case 'text/markdown':
@@ -191,7 +201,7 @@ const requestToConvertFile = async (evt) => {
         break;
     }
   } catch (error) {
-    console.log(error);
+    console.log('requestToConvertFile', error);
   }
 }
 
