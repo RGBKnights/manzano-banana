@@ -7,3 +7,8 @@ export const chatApi = axios.create({
 export const whisperApi = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT,
 })
+
+
+export const fetchApi = axios.create({
+  baseURL: import.meta.env.VITE_API_ENDPOINT,
+})

@@ -23,13 +23,13 @@
       </div>
       <MdEditor  v-model="message" language="en-US" noUploadImg :theme="isDark ? 'dark' : 'light'" :preview="false" :footers="[]" :toolbars="toolbars" :toolbarsExclude="['github', 'catalog', 'htmlPreview', 'fullscreen']">
         <template #defToolbars>
-          <NormalToolbar title="upload file" @onClick="uploadFileHandle" slot="0">
+          <NormalToolbar title="upload document" @onClick="uploadFileHandle" slot="0">
             <template #trigger>
-              <input v-on:change="requestToConvertFile" id="upload-file" type="file" accept=".doc,.docx,.txt" style="display:none;">
+              <input v-on:change="requestToConvertFile" id="upload-file" type="file" accept="text/plain,text/markdown,text/csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet," style="display:none;">
               <font-awesome-icon icon="fa-solid fa-file-import" />
             </template>
           </NormalToolbar>
-          <NormalToolbar title="read link " slot="1">
+          <NormalToolbar title="read webpage" @onClick="readWebPage" slot="1">
             <template #trigger>
               <font-awesome-icon icon="fa-solid fa-glasses" />
             </template>
@@ -60,12 +60,19 @@
   </div>
 </template>
 
+<!-- TODO: File upload Excel, Word, Txt, markdown, PDF -->
+
 <script setup>
 import { useDark } from '@vueuse/core';
 import { ref, computed  } from 'vue';
 import { messageStore } from '../stores/messageStore.js';
+import { fetchApi } from "../apis/chat"
 import ChatRecorder from "./ChatRecorder.vue"
 import MdEditor from "md-editor-v3";
+import mammoth from "mammoth/mammoth.browser";
+import csvToMarkdown from "csv-to-markdown-table";
+import readXlsxFile from 'read-excel-file'
+import tablemark from "tablemark"
 
 const NormalToolbar = MdEditor.NormalToolbar;
 
@@ -138,61 +145,117 @@ const isBusy = computed(() => {
   return store.isBusy
 })
 
+const readWebPage = async () => {
+  try {
+    const url = prompt("Please enter a url")
+    const response = await fetchApi.get(`/fetch?url=${encodeURIComponent(url)}`)
+    message.value = response.data
+  } catch (error) {
+    console.log('readWebPage', error);
+  }
+}
+
 const uploadFileHandle = () => {
   const el = document.getElementById('upload-file');
   el.click();
 }
 
 const requestToConvertFile = async (evt) => {
-  const file = evt.target.files[0];
-  console.log(file);
-  switch (file.type) {
-    case 'text/plain':
-    case 'text/markdown':
-      {
-        const contents = await readFileasText(file);
-        console.log(contents);
-      }
-      break;
-    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-      // https://www.npmjs.com/package/word-extractor
-      break;
-    case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-      break;
-    case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-      // https://www.npmjs.com/package/read-excel-file
-      break;
-    case "application/pdf":
-      //https://www.npmjs.com/package/pdf-parse
-      break;
-    default:
-      break;
+  try {
+    const file = evt.target.files[0];
+    switch (file.type) {
+      case 'text/plain':
+        {
+          message.value = await readAsText(file)
+          break
+        }
+      case 'text/markdown':
+        {
+          message.value = await readAsText(file)
+          break
+        }
+      case "text/csv":
+        {
+          const csv = await readAsText(file)
+          message.value = csvToMarkdown(csv, ",", true)
+          break
+        }
+      case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        {
+          const buffer = await readAsArrayBuffer(file)
+          const result = await mammoth.convertToMarkdown({arrayBuffer: buffer})
+          message.value = result.value
+          break
+        }
+      
+      case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+        {
+          const rows = await readXlsxFile(file)
+          message.value = tablemark(rows)
+          break
+        }
+      case "application/pdf":
+        message.value = await extractTextFromPdf(file)
+        break;
+      default:
+        break;
+    }
+  } catch (error) {
+    console.log('requestToConvertFile', error);
   }
-  
-  function readFileasText(file) {
-    return new Promise((resolve, reject) => {
-      let reader = new FileReader();
-      reader.readAsText(file);
-      reader.onload = () => {
-        resolve(reader.result);
-      }
-      reader.onerror = () => {
-        reject(reader.error);
-      }
-    });
+}
+
+function readAsText(file) {
+  return new Promise((resolve, reject) => {
+    let reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => {
+      resolve(reader.result);
+    }
+    reader.onerror = () => {
+      reject(reader.error);
+    }
+  });
+}
+
+function readAsArrayBuffer(file) {
+  return new Promise((resolve, reject) => {
+    let reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onload = () => {
+      resolve(reader.result);
+    }
+    reader.onerror = () => {
+      reject(reader.error);
+    }
+  });
+}
+
+async function loadPdf(file) {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdfData = new Uint8Array(arrayBuffer);
+  return pdfjsLib.getDocument({ data: pdfData }).promise;
+}
+
+async function extractTextFromPage(pdf, pageNumber) {
+  const page = await pdf.getPage(pageNumber);
+  const content = await page.getTextContent();
+  const strings = content.items.map((item) => item.str);
+  return strings;
+}
+
+async function extractTextFromPdf(file) {
+  const pdf = await loadPdf(file);
+  const numPages = pdf.numPages;
+
+  let extractedText = "";
+
+  for (let i = 1; i <= numPages; i++) {
+    const pageText = await extractTextFromPage(pdf, i);
+    extractedText += pageText.join(" ") + "\n";
   }
-  function readExcelAsTable(file) {
-    return new Promise((resolve, reject) => {
-      let reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      reader.onload = () => {
-        resolve(reader.result);
-      }
-      reader.onerror = () => {
-        reject(reader.error);
-      }
-    });
-  }
+
+  return extractedText;
 }
 </script>
 
