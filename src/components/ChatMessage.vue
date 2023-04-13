@@ -29,32 +29,20 @@ import { messageStore } from '../stores/messageStore.js';
 import MdEditor from "md-editor-v3";
 
 
-// MdEditor.config({
-//   markedRenderer(renderer) {
-//     // Store the original renderer.code function
-//     const originalCodeRenderer = renderer.code;
-
-//     // Extend the renderer.code function
-//     renderer.code = function(code, language, isEscaped) {
-//       // Call the original renderer.code function
-//       const result = originalCodeRenderer.call(this, code, language, isEscaped);
-
-//       if(language == 'chart') {
-//         const canvas = document.createElement('canvas')
-//         canvas.width = 400
-//         canvas.height = 400
-//         const cxt = canvas.getContext('2d')
-//         const config = {};
-//         const chart = new Chart(cxt, config)
-//         return canvas.outerHTML;
-//       }
-
-//       // Return the result
-//       return result;
-//     };
-//     return renderer;
-//   }
-// });
+MdEditor.config({
+   markedRenderer(renderer) {
+     const originalCodeRenderer = renderer.code;
+     renderer.code = function(code, language, isEscaped) {
+       const result = originalCodeRenderer.call(this, code, language, isEscaped);
+       if(language == 'chart') {
+        const url = `https://quickchart.io/chart?c=${encodeURIComponent(code)}`
+        return `<img src="${url}" title="" alt="Chart" zoom="" class="medium-zoom-image">`
+       }
+      return result;
+     };
+     return renderer;
+  }
+});
 
 
 const store = messageStore();
