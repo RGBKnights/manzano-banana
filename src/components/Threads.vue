@@ -36,6 +36,7 @@ function editThreadName(index, title) {
 
 async function changeThread(index) {
   store.changeThread(index);
+  document.querySelector('#msg-header').scrollIntoView();
 }
 </script>
 

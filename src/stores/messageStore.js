@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { v4 as uuid } from 'uuid';
 import { chatApi } from "../apis/chat"
+import { whisperApi } from "../apis/chat"
 
 export const messageStore = defineStore("messageStore", {
   persist: true,
@@ -25,8 +26,19 @@ export const messageStore = defineStore("messageStore", {
     },
   },
   actions: {
-    changeThread(index) {
-      this.active = index;
+    async transcribeVoice(blob) {
+      this.isBusy = true;
+      try {
+        const formData = new FormData()
+        formData.append('file', blob)
+        const config = { headers: { 'Content-Type': `multipart/form-data` } };
+        const response = await whisperApi.post('/whisper', formData, config)
+        this.addMessage(response.data.transcription)
+      } catch (error) {
+        console.log('stopRecording', error)
+      } finally {
+        this.isBusy = false;
+      }
     },
     addMessage(content) {
       let messages = this.collection[this.active]?.messages;
@@ -57,7 +69,7 @@ export const messageStore = defineStore("messageStore", {
         const {data} = await chatApi.post('/chat', body);
         messages.push(data.message);
       } catch (err) {
-        console.log(err);
+        console.log('sendMessages', err);
       } finally {
         this.isBusy = false;
       }
@@ -91,6 +103,11 @@ export const messageStore = defineStore("messageStore", {
         ]
       });
       this.active = this.collection.length - 1;
+    },
+    changeThread(index) {
+      if(this.isBusy === false) {
+        this.active = index;
+      }
     },
     changeName(data) {
       const { index, name } = data;

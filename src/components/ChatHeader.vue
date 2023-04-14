@@ -1,9 +1,10 @@
 <template>
- <div class="pb-6">
-    <span class="font-bold italic text-2xl underlined underline-part1">Manzano</span><span class="text-white font-bold underlined underline-part2"> Banana</span>
+ <div class="pb-6 flex justify-center">
+    <div>
+      <span class="font-bold italic text-emerald-600 dark:text-emerald-500 text-2xl underlined underline-part1">Manzano</span><span class="text-amber-500 drk:text-amber-400 font-bold underlined underline-part2"> Banana</span>
+    </div>
   </div>
 </template>
-
 
 <style scoped>
 .underlined {

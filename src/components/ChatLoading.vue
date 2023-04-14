@@ -1,6 +1,6 @@
 <template>
-<div v-if="loading">
-  <div class="p-4 mt-2 bg-white border border-gray-200 rounded-lg shadow">
+<div v-if="loading" class="p-2">
+  <div class="p-4 bg-white border border-gray-200 rounded-lg shadow">
     <div class="flex space-x-4">
       <div class="flex-shrink-0 w-8">
         <img class="w-8 h-8 rounded-md border" src="https://i.imgur.com/eiMpBqJ.png" alt="Ai" />

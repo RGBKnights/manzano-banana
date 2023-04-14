@@ -2,14 +2,13 @@
   <button v-if="!recording" @click="startRecording" title="Whisper" type="button" v-bind:disabled="isBusy" class="text-slate-300 text-3xl pr-2">
     <font-awesome-icon icon="fa-solid fa-circle-play" />
   </button>
-  <button v-else @click="stopRecording" title="Whisper" type="button" v-bind:disabled="isBusy" class="text-red-400 text-3xl pr-2">
-    <font-awesome-icon icon="fa-solid fa-circle" />
+  <button v-else @click="stopRecording" title="Whisper" type="button" v-bind:disabled="isBusy" class="text-red-400 text-3xl pr-2 animate-pulse">
+    <font-awesome-icon icon="fa-solid fa-circle " />
   </button>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { whisperApi } from "../apis/chat"
 import { messageStore } from '../stores/messageStore.js'
 
 const store = messageStore()
@@ -44,17 +43,8 @@ const stopRecording = () => {
   recording.value = false
 
   setTimeout(async() => {
-    try {
-      
-      const blob = new Blob(recordedChunks.value, {type: 'audio/webm'})
-      const formData = new FormData()
-      formData.append('file', blob)
-      const config = { headers: { 'Content-Type': `multipart/form-data` } };
-      const response = await whisperApi.post('/whisper', formData, config)
-      store.addMessage(response.data.transcription)
-    } catch (error) {
-      console.log('stopRecording', error)
-    }
+    const blob = new Blob(recordedChunks.value, {type: 'audio/webm'})
+    await store.transcribeVoice(blob)
   }, 1000);
 }
 </script>
