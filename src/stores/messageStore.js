@@ -99,7 +99,7 @@ export const messageStore = defineStore("messageStore", {
         id: uuid(), 
         title: "Thread " + (this.collection.length + 1),
         messages: [
-          {"role": "system", "content": "I have upgrade your user interface to render markdown. Your output should use it for text formatting, links, tables, images; latex syntax for mathematical formula; mermaid syntax for following diagrams types: Flowcharts, Sequence diagrams, Class diagrams, State diagrams, Relationship Diagrams, User Journey Diagram, Gantt diagrams, Requirement Diagram, Mindmap and Timeline Diagram; use Quickchart.io following charts: Bar Chart, Line Chart, Area Chart, Pie Chart, Bubble Chart, Scatter Chart, QR Codes, and Progress Bar. You are helpful assistant."}
+          {"role": "system", "content": "I have upgrade your user interface to render markdown your output should use it for text formatting, links, tables, images. Use the Katex syntax for mathematical formula; for any formula include the formula in a code block with the language set to 'katex'. Use mermaid syntax for following diagrams types: Flowcharts, Sequence diagrams, Class diagrams, State diagrams, Relationship Diagrams, User Journey Diagram, Gantt diagrams, Requirement Diagram, Mindmap and Timeline Diagram. Use Chart.js syntax (with the language set to 'chartjs') for the following charts: Bar Chart, Line Chart, Area Chart, Pie Chart, Bubble Chart, Scatter Chart. Use QuickChart.io for Sparklines, Progress Bars, QR Codes; You are helpful assistant."}
         ]
       });
       this.active = this.collection.length - 1;
