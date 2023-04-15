@@ -25,9 +25,13 @@
 </template>
 
 <script setup>
+  import { computed } from "vue";
   import { useDark, useToggle } from '@vueuse/core';
   import { messageStore } from "../stores/messageStore.js";
   const store = messageStore();
+  const user = computed(() => {
+    return store.user
+  })
   const isDark = useDark();
   const toggleDark = useToggle(isDark);
   function clearThreads() {
@@ -36,7 +40,7 @@
     }
   } 
   function account() {
-    alert('Testing');
+    alert(`User: ${user.value}`);
   } 
 </script>
 
