@@ -30,30 +30,6 @@ import { messageStore } from '../stores/messageStore.js';
 import MdEditor from "md-editor-v3";
 import { nanoid } from 'nanoid'
 
-MdEditor.config({
-   markedRenderer(renderer) {
-     const originalCodeRenderer = renderer.code;
-     renderer.code = function(code, language, isEscaped) {
-       const result = originalCodeRenderer.call(this, code, language, isEscaped);
-       if(language == 'chartjs') {
-        const url = `https://quickchart.io/chart?c=${encodeURIComponent(code)}`
-        return `<img src="${url}" title="" alt="Chart" zoom="" class="medium-zoom-image">`
-       }
-       else if(language == 'katex') { 
-        const id = nanoid(10);
-        setTimeout(() => {
-          const elt = document.getElementById(`calculator-${id}`)
-          var calculator = Desmos.GraphingCalculator(elt);
-          calculator.setExpression({ id: `calculator-${id}`, latex: 'y=mx+b' });
-        }, 1000);
-        return `<div id="calculator-${id}" style="width: 900px; height: 600px;"></div>`;
-       }
-      return result;
-     };
-     return renderer;
-  }
-});
-
 
 const store = messageStore();
 
@@ -70,6 +46,43 @@ const changeRole = () => {
     store.changeRole(props.index + 1);
   }
 }
+
+MdEditor.config({
+   markedRenderer(renderer) {
+     const originalCodeRenderer = renderer.code;
+     renderer.code = function(code, language, isEscaped) {
+       const result = originalCodeRenderer.call(this, code, language, isEscaped);
+       if(language == 'chartjs') {
+        const url = `https://quickchart.io/chart?c=${encodeURIComponent(code)}`
+        return `<img src="${url}" title="" alt="Chart" zoom="" class="medium-zoom-image">`
+       } else if(language == 'katex') { 
+        const id = nanoid(10);
+        setTimeout(() => {
+          const elt = document.getElementById(`calculator-${id}`)
+          var calculator = Desmos.GraphingCalculator(elt);
+          calculator.setExpression({ id: `calculator-${id}`, latex: 'y=mx+b' });
+        }, 500);
+        return `<div id="calculator-${id}" style="width: 900px; height: 600px;"></div>`;
+       } else if(language == 'musicxml') { 
+        const id = nanoid(10);
+        setTimeout(async () => {
+          const elt = document.getElementById(`osmdContainer-${id}`)
+          var osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(elt);
+          osmd.setOptions({
+            backend: "svg",
+            drawTitle: true,
+            darkMode: isDark.value
+          });
+          await osmd.load(code)
+          await osmd.render()
+        }, 500);
+        return `<div id="osmdContainer-${id}"></div>`;
+       }
+      return result;
+     };
+     return renderer;
+  }
+});
 
 </script>
 
