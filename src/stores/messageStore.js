@@ -5,7 +5,6 @@ import { whisperApi } from "../apis/chat"
 
 function prompt() {
   return "Use following markdown upgrades when applicable." +
-  "If the user wants to see the raw values set the language of the markdown to 'text'" +
   "I have upgrade your user interface to render markdown your output should use it for text formatting" +
   "I have upgrade your user interface to render tables and datasets via markdown use that for tabular data" +
   "I have upgrade your user interface to render mathematical formula via markdown use the Katex syntax." +
@@ -13,6 +12,7 @@ function prompt() {
   "I have upgrade your user interface to render charts via markdown use Chart.js syntax (with the language set to 'chartjs') for the following charts: Bar Chart, Line Chart, Area Chart, Pie Chart, Bubble Chart, Scatter Chart." + 
   "I have upgrade your user interface to render images via markdown use QuickChart.io for Sparklines, Progress Bars, QR Codes;" +
   "I have upgrade your user interface to render music via markdown rendered via opensheet music display use MusicXML for music syntax in a code block with the language set to 'musicxml'." +
+  "If the user wants to see the raw values set the language of the markdown to 'text'" +
   "You are helpful assistant";
 }
 
