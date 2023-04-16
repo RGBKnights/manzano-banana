@@ -56,12 +56,12 @@ MdEditor.config({
        if(language == 'chart') {
         const url = `https://quickchart.io/chart?c=${encodeURIComponent(code)}`
         return `<img src="${url}" title="" alt="Chart" zoom="" class="medium-zoom-image">`
-       } else if(language == 'latex') { 
+       } else if(language == 'desmos') { 
         const id = nanoid(10);
         setTimeout(() => {
           const elt = document.getElementById(`calculator-${id}`)
           var calculator = Desmos.GraphingCalculator(elt);
-          calculator.setExpression({ id: `calculator-${id}`, latex: 'y=mx+b' });
+          calculator.setExpression({ id: `calculator-${id}`, latex: code });
         }, 10);
         return `<div id="calculator-${id}" style="width: 900px; height: 600px;"></div>`;
        } else if(language == 'music') { 

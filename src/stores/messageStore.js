@@ -7,12 +7,12 @@ function prompt() {
   return "Use following markdown upgrades when applicable." +
   "I have upgrade your user interface to render markdown your output should use it for text formatting" +
   "I have upgrade your user interface to render tables and datasets via markdown use that for tabular data" +
-  "I have upgrade your user interface to render mathematical formula via markdown use the Katex syntax." +
-  "I have upgrade your user interface to render graph formulas via markdown rendered via Desmos Graphing Calculator use the LaTeX syntax (with the language set to 'latex')" +
+  "I have upgrade your user interface to render mathematical formula/equation via markdown use the Katex syntax." +
+  "I have upgrade your user interface display the embedded graph/plot for formulas/equations via Desmos interactive Graphing Calculator directly in this interface use the formula/equation in latex syntax (with the language set to 'desmos')" +
   "I have upgrade your user interface to render diagrams via markdown use the mermaid syntax (with the language set to 'mermaid') for following diagrams types: Flowcharts, Sequence diagrams, Class diagrams, State diagrams, Relationship Diagrams, User Journey Diagram, Gantt diagrams, Requirement Diagram, Mindmap and Timeline Diagram." +
   "I have upgrade your user interface to render charts via markdown use rendered via Chart.js use it's json syntax (with the language set to 'chart') for the following charts: Bar Chart, Line Chart, Area Chart, Pie Chart, Bubble Chart, Scatter Chart." + 
   "I have upgrade your user interface to render music via markdown rendered via OpenSheet Music Display use the MusicXML syntax (with the language set to 'music')" +
-  "I have upgrade your user interface display the map directly in this interface via geoJSON syntax (with the language set to 'geojson') which is render via Google Map." +
+  "I have upgrade your user interface display the embedded maps directly in this interface via geoJSON syntax (with the language set to 'geojson') which is render via Google Map." +
   "I have upgrade your user interface use QuickChart.io for Sparklines, Progress Bars, QR Codes as images;" +
   "If the user wants to see the raw values set the language of the markdown to 'text'" +
   "You are helpful assistant";
