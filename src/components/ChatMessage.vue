@@ -29,7 +29,8 @@ import { useDark } from '@vueuse/core';
 import { messageStore } from '../stores/messageStore.js';
 import MdEditor from "md-editor-v3";
 import { nanoid } from 'nanoid'
-
+import center from '@turf/center';
+import bbox from '@turf/bbox';
 
 const store = messageStore();
 
@@ -52,18 +53,18 @@ MdEditor.config({
      const originalCodeRenderer = renderer.code;
      renderer.code = function(code, language, isEscaped) {
        const result = originalCodeRenderer.call(this, code, language, isEscaped);
-       if(language == 'chartjs') {
+       if(language == 'chart') {
         const url = `https://quickchart.io/chart?c=${encodeURIComponent(code)}`
         return `<img src="${url}" title="" alt="Chart" zoom="" class="medium-zoom-image">`
-       } else if(language == 'katex') { 
+       } else if(language == 'latex') { 
         const id = nanoid(10);
         setTimeout(() => {
           const elt = document.getElementById(`calculator-${id}`)
           var calculator = Desmos.GraphingCalculator(elt);
           calculator.setExpression({ id: `calculator-${id}`, latex: 'y=mx+b' });
-        }, 500);
+        }, 10);
         return `<div id="calculator-${id}" style="width: 900px; height: 600px;"></div>`;
-       } else if(language == 'musicxml') { 
+       } else if(language == 'music') { 
         const id = nanoid(10);
         setTimeout(async () => {
           const elt = document.getElementById(`osmdContainer-${id}`)
@@ -75,8 +76,42 @@ MdEditor.config({
           });
           await osmd.load(code)
           await osmd.render()
-        }, 500);
+        }, 10);
         return `<div id="osmdContainer-${id}"></div>`;
+       } else if (language == "geojson") {
+        const id = nanoid(10);
+        setTimeout(async () => {
+          try {
+            const elt = document.getElementById(`map-${id}`);
+            if(elt) {
+              const data = JSON.parse(code)
+              const bounds = bbox(data);
+
+              const { Map } = await google.maps.importLibrary("maps");
+              const map = new Map(elt, {
+                // center: centroid,
+                // zoom: 10,
+                disableDefaultUI: true,
+              });
+              var info = new google.maps.InfoWindow();
+              google.maps.event.addListener(map, 'click', function() {
+                info.close();
+              });
+              map.data.addListener('click', function(event) {
+                info.setContent(event.feature.getProperty('name'));
+                info.setPosition(event.latLng);
+                info.setOptions({pixelOffset: new google.maps.Size(0,-34)});
+                info.open(map);
+              });
+
+              map.data.addGeoJson(data)
+              map.fitBounds({ east: bounds[2], north: bounds[3], south: bounds[1], west: bounds[0] }, { padding: 20 })
+            }
+          } catch (error) {
+            console.log('geojson', error)
+          }
+        }, 10);
+        return `<div id="map-${id}" class="google-maps" style=""></div>`;
        }
       return result;
      };
@@ -85,6 +120,17 @@ MdEditor.config({
 });
 
 </script>
+
+<style>
+.google-maps {
+  width:900px;
+  height:600px;
+}
+.google-maps div {
+  --github-theme-heading-bg-color: transparent;
+  color: black
+}
+</style>
 
 <style scoped>
 .md-editor-dark  {

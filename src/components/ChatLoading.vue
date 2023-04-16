@@ -65,35 +65,35 @@ defineProps({
   animation-name: fadeInFromNone;
 }
 .fade-in-1 {
-  animation-duration: 5s;
+  animation-duration: 10s;
 }
 .fade-in-2 {
-  animation-duration: 10s;
-  animation-delay: 5s;
-}
-.fade-in-3 {
-  animation-duration: 15s;
+  animation-duration: 20s;
   animation-delay: 10s;
 }
-.fade-in-4 {
-  animation-duration: 20s;
-  animation-delay: 15s;
-}
-.fade-in-5 {
-  animation-duration: 25s;
+.fade-in-3 {
+  animation-duration: 30s;
   animation-delay: 20s;
 }
-.fade-in-6 {
-  animation-duration: 30s;
-  animation-delay: 25s;
-}
-.fade-in-7 {
+.fade-in-4 {
   animation-duration: 40s;
-  animation-delay: 30s;
+  animation-delay: 35s;
 }
-.fade-in-8 {
+.fade-in-5 {
   animation-duration: 50s;
   animation-delay: 40s;
+}
+.fade-in-6 {
+  animation-duration: 60s;
+  animation-delay: 50s;
+}
+.fade-in-7 {
+  animation-duration: 90s;
+  animation-delay: 60s;
+}
+.fade-in-8 {
+  animation-duration: 120s;
+  animation-delay: 90s;
 }
 
 

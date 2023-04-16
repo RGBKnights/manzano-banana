@@ -8,10 +8,12 @@ function prompt() {
   "I have upgrade your user interface to render markdown your output should use it for text formatting" +
   "I have upgrade your user interface to render tables and datasets via markdown use that for tabular data" +
   "I have upgrade your user interface to render mathematical formula via markdown use the Katex syntax." +
-  "I have upgrade your user interface to render diagrams via markdown use the mermaid syntax (with the language set to 'mermaid')  for following diagrams types: Flowcharts, Sequence diagrams, Class diagrams, State diagrams, Relationship Diagrams, User Journey Diagram, Gantt diagrams, Requirement Diagram, Mindmap and Timeline Diagram." +
-  "I have upgrade your user interface to render charts via markdown use Chart.js syntax (with the language set to 'chartjs') for the following charts: Bar Chart, Line Chart, Area Chart, Pie Chart, Bubble Chart, Scatter Chart." + 
-  "I have upgrade your user interface to render images via markdown use QuickChart.io for Sparklines, Progress Bars, QR Codes;" +
-  "I have upgrade your user interface to render music via markdown rendered via opensheet music display use MusicXML for music syntax in a code block with the language set to 'musicxml'." +
+  "I have upgrade your user interface to render graph formulas via markdown rendered via Desmos Graphing Calculator use the LaTeX syntax (with the language set to 'latex')" +
+  "I have upgrade your user interface to render diagrams via markdown use the mermaid syntax (with the language set to 'mermaid') for following diagrams types: Flowcharts, Sequence diagrams, Class diagrams, State diagrams, Relationship Diagrams, User Journey Diagram, Gantt diagrams, Requirement Diagram, Mindmap and Timeline Diagram." +
+  "I have upgrade your user interface to render charts via markdown use rendered via Chart.js use it's json syntax (with the language set to 'chart') for the following charts: Bar Chart, Line Chart, Area Chart, Pie Chart, Bubble Chart, Scatter Chart." + 
+  "I have upgrade your user interface to render music via markdown rendered via OpenSheet Music Display use the MusicXML syntax (with the language set to 'music')" +
+  "I have upgrade your user interface display the map directly in this interface via geoJSON syntax (with the language set to 'geojson') which is render via Google Map." +
+  "I have upgrade your user interface use QuickChart.io for Sparklines, Progress Bars, QR Codes as images;" +
   "If the user wants to see the raw values set the language of the markdown to 'text'" +
   "You are helpful assistant";
 }
@@ -54,6 +56,10 @@ export const messageStore = defineStore("messageStore", {
       }
     },
     addMessage(content) {
+      if(this.collection.length == 0) {
+        this.addThread()
+      }
+
       let messages = this.collection[this.active]?.messages;
       let msg = messages.at(-1);
       switch (msg.role) {
@@ -71,7 +77,7 @@ export const messageStore = defineStore("messageStore", {
       }
     },
     async sendMessages() {
-      this.isBusy = true;
+      this.isBusy = true
       try {
         const thread = this.collection[this.active];
         let messages = thread.messages;
@@ -79,18 +85,18 @@ export const messageStore = defineStore("messageStore", {
           user: this.user,
           history: messages
         };
-        const {data} = await chatApi.post('/chat', body);
+        const {data} = await chatApi.post('/chat', body)
         messages.push(data.message);
       } catch (err) {
-        console.log('sendMessages', err);
+        console.log('sendMessages', err)
       } finally {
-        this.isBusy = false;
+        this.isBusy = false
       }
     },
     changeRole(index) {
-      const thread = this.collection[this.active];
-      let messages = thread.messages;
-      let msg = messages.at(index);
+      const thread = this.collection[this.active]
+      let messages = thread.messages
+      let msg = messages.at(index)
       switch (msg.role) {
         case "assistant":
           msg.role ="user"
@@ -114,8 +120,8 @@ export const messageStore = defineStore("messageStore", {
         messages: [
           {"role": "system", "content": prompt()}
         ]
-      });
-      this.active = this.collection.length - 1;
+      })
+      this.active = this.collection.length - 1
     },
     changeThread(index) {
       if(this.isBusy === false) {
