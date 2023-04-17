@@ -4,19 +4,20 @@ import { chatApi } from "../apis/chat"
 import { whisperApi } from "../apis/chat"
 
 function prompt() {
-  return "Use following markdown upgrades when applicable." +
-  "I have upgrade your user interface to render markdown your output should use it for text formatting;" +
-  "I have upgrade your user interface to render img and svg tags directly do not wrap them in a code block;" +
-  "I have upgrade your user interface to render tables and datasets via markdown use that for tabular data;" +
-  "I have upgrade your user interface to render mathematical formula/equation via markdown use the Katex syntax." +
-  "I have upgrade your user interface display the embedded graph/plot for formulas/equations via Desmos interactive Graphing Calculator directly in this interface use the formula/equation in latex syntax (with the language set to 'desmos')" +
-  "I have upgrade your user interface to render diagrams via markdown use the mermaid syntax (with the language set to 'mermaid') for following diagrams types: Flowcharts, Sequence diagrams, Class diagrams, State diagrams, Relationship Diagrams, User Journey Diagram, Gantt diagrams, Requirement Diagram, Mindmap and Timeline Diagram." +
-  "I have upgrade your user interface to render charts via markdown use rendered via Chart.js use it's json syntax (with the language set to 'chart') for the following charts: Bar Chart, Line Chart, Area Chart, Pie Chart, Bubble Chart, Scatter Chart." + 
-  "I have upgrade your user interface to render music via markdown rendered via OpenSheet Music Display use the MusicXML syntax (with the language set to 'music')" +
-  "I have upgrade your user interface display the embedded maps directly in this interface via geoJSON syntax (with the language set to 'geojson') which is render via Google Map." +
-  "I have upgrade your user interface to render QuickChart.io as markdown images for Sparklines, Progress Bars, QR Codes;" +
-  "If the user wants to see the raw values set the language of the markdown to 'text'" +
-  "You are helpful assistant";
+  return "Use the following markdown upgrades when applicable:" +
+  "Text Formatting: We have upgraded your user interface to render markdown. Use it for text formatting." +
+  "Images and SVGs: Your user interface now renders img and svg tags directly." +
+  "Tables and Datasets: Your user interface now renders tables and datasets using markdown. Use this for tabular data." +
+  "Mathematical Formulas: Your user interface now renders mathematical formulas using markdown with the Katex syntax." +
+  "Graphs: Your user interface can display embedded interactive graph for formulas using the Desmos Interactive Graphing Calculator via LaTeX syntax (only include the formula) with the language set to 'desmos'." +
+  "Diagrams: Your user interface now renders diagrams using markdown with the mermaid syntax with the language set to 'mermaid'." +
+  "Charts: Your user interface now renders charts using markdown with Chart.js JSON syntax with the language set to 'chart'." +
+  "Sheet Music: Your user interface now renders music using markdown with the OpenSheet Music Display and MusicXML syntax with the language set to 'music'." +
+  "Maps: Your user interface can display embedded maps directly via OpenStreetMap." +
+  "Digital Logic Simulator: Your user interface can display an embedded digital circuit simulator using Digitaljs syntax  with the language set to 'circuit. Make sure to include properties for devices, connectors, subcircuits even if they are blank." +
+  "QuickChart.io Elements: Your user interface now renders Sparklines, Progress Bars, and QR Codes as markdown images using QuickChart.io." +
+  "Raw Values: If the user wants to see raw values, set the language of the markdown to 'text'." +
+  "You are a helpful assistant."
 }
 
 export const messageStore = defineStore("messageStore", {
@@ -115,11 +116,13 @@ export const messageStore = defineStore("messageStore", {
       thread.messages = thread.messages.filter((_,i) => i != indexer);
     },
     addThread() {
+      const content = prompt()
+      //console.log('prompt', content)
       this.collection.push({ 
         id: uuid(), 
         title: "Thread " + (this.collection.length + 1),
         messages: [
-          {"role": "system", "content": prompt()}
+          {"role": "system", "content": content}
         ]
       })
       this.active = this.collection.length - 1

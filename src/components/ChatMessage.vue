@@ -24,12 +24,11 @@
 </template>
 
 <script setup>
+import { nanoid } from 'nanoid'
 import { ref } from "vue";
 import { useDark } from '@vueuse/core';
 import { messageStore } from '../stores/messageStore.js';
 import MdEditor from "md-editor-v3";
-import { nanoid } from 'nanoid'
-import center from '@turf/center';
 import bbox from '@turf/bbox';
 
 const store = messageStore();
@@ -62,9 +61,9 @@ MdEditor.config({
           const elt = document.getElementById(`calculator-${id}`)
           var calculator = Desmos.GraphingCalculator(elt);
           calculator.setExpression({ id: `calculator-${id}`, latex: code });
-        }, 10);
+        }, 100);
         return `<div id="calculator-${id}" style="width: 900px; height: 600px;"></div>`;
-       } else if(language == 'music') { 
+       } else if(language == 'musicxml') { 
         const id = nanoid(10);
         setTimeout(async () => {
           const elt = document.getElementById(`osmdContainer-${id}`)
@@ -76,42 +75,23 @@ MdEditor.config({
           });
           await osmd.load(code)
           await osmd.render()
-        }, 10);
+        }, 100);
         return `<div id="osmdContainer-${id}"></div>`;
-       } else if (language == "geojson") {
+       } else if(language == 'circuit') { 
         const id = nanoid(10);
         setTimeout(async () => {
           try {
-            const elt = document.getElementById(`map-${id}`);
-            if(elt) {
-              const data = JSON.parse(code)
-              const bounds = bbox(data);
-
-              const { Map } = await google.maps.importLibrary("maps");
-              const map = new Map(elt, {
-                // center: centroid,
-                // zoom: 10,
-                disableDefaultUI: true,
-              });
-              var info = new google.maps.InfoWindow();
-              google.maps.event.addListener(map, 'click', function() {
-                info.close();
-              });
-              map.data.addListener('click', function(event) {
-                info.setContent(event.feature.getProperty('name'));
-                info.setPosition(event.latLng);
-                info.setOptions({pixelOffset: new google.maps.Size(0,-34)});
-                info.open(map);
-              });
-
-              map.data.addGeoJson(data)
-              map.fitBounds({ east: bounds[2], north: bounds[3], south: bounds[1], west: bounds[0] }, { padding: 20 })
-            }
+            const data = JSON.parse(code)
+            const elt = document.getElementById(`digital-${id}`);
+            const circuit = new digitaljs.Circuit(data);
+            const paper = circuit.displayOn(elt);
+            paper.fixed(true);
+            circuit.start();
           } catch (error) {
-            console.log('geojson', error)
+            console.log('circuit', error)
           }
-        }, 10);
-        return `<div id="map-${id}" class="google-maps" style=""></div>`;
+        }, 100);
+        return `<div id="digital-${id}" class="digitaljs" style="position: relative;"></div>`;
        }
       return result;
      };
@@ -129,6 +109,11 @@ MdEditor.config({
 .google-maps div {
   --github-theme-heading-bg-color: transparent;
   color: black
+}
+.digitaljs input, .digitaljs select {
+  --github-theme-color: black;
+  --md-color: black;
+  color: black;
 }
 </style>
 
