@@ -145,11 +145,22 @@ const isBusy = computed(() => {
   return store.isBusy
 })
 
+const user = computed(() => {
+  return store.user
+})
+
 const readWebPage = async () => {
   try {
     const url = prompt("Please enter a url")
-    const response = await fetchApi.get(`/fetch?url=${encodeURIComponent(url)}`)
-    message.value = response.data
+    if(url) {
+      const data = {
+        user: user.value, 
+        url: url
+        // configuration: {}
+      }
+      const response = await fetchApi.post(`/fetch`, data)
+      message.value = response.data
+    }
   } catch (error) {
     console.log('readWebPage', error);
   }
