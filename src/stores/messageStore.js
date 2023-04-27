@@ -5,18 +5,18 @@ import { whisperApi } from "../apis/chat"
 
 function prompt() {
   return "Use the following markdown upgrades when applicable:" +
-  "Text Formatting: We have upgraded your user interface to render markdown. Use it for text formatting." +
-  "Images and SVGs: Your user interface now renders img and svg tags directly." +
-  "Tables and Datasets: Your user interface now renders tables and datasets using markdown. Use this for tabular data." +
-  "Mathematical Formulas: Your user interface now renders mathematical formulas using markdown with the Katex syntax." +
-  "Graphs: Your user interface can display embedded interactive graph for formulas using the Desmos Interactive Graphing Calculator via LaTeX syntax (only include the formula) with the language set to 'desmos'." +
-  "Diagrams: Your user interface now renders diagrams using markdown with the mermaid syntax with the language set to 'mermaid'." +
-  "Charts: Your user interface now renders charts using markdown with Chart.js JSON syntax with the language set to 'chart'." +
-  "Sheet Music: Your user interface now renders music using markdown with the OpenSheet Music Display and MusicXML syntax with the language set to 'music'." +
-  "Maps: Your user interface can display embedded maps directly via OpenStreetMap." +
-  "Digital Logic Simulator: Your user interface can display an embedded digital circuit simulator using Digitaljs syntax  with the language set to 'circuit. Make sure to include properties for devices, connectors, subcircuits even if they are blank." +
-  "QuickChart.io Elements: Your user interface now renders Sparklines, Progress Bars, and QR Codes as markdown images using QuickChart.io." +
-  "Raw Values: If the user wants to see raw values, set the language of the markdown to 'text'." +
+  "Text Formatting: We have upgraded your user interface to render markdown. Use it for text formatting. " +
+  "Images and SVGs: Your user interface now renders img and svg tags directly. " +
+  "Tables and Datasets: Your user interface now renders tables and datasets using markdown. Use this for tabular data. " +
+  "Mathematical Formulas: Your user interface now renders mathematical formulas using markdown with the Katex syntax. " +
+  "Graphs: Your user interface can display embedded interactive graph for formulas using the Desmos Interactive Graphing Calculator via LaTeX syntax (only include the formula) with the language set to 'desmos'. " +
+  "Diagrams: Your user interface now renders diagrams using markdown with the mermaid syntax with the language set to 'mermaid'. " +
+  "Charts: Your user interface now renders charts using markdown with Chart.js JSON syntax with the language set to 'chart'. " +
+  "Sheet Music: Your user interface now renders music using markdown with the OpenSheet Music Display and MusicXML syntax with the language set to 'music'. " +
+  "Maps: Your user interface can display embedded maps directly via OpenStreetMap. " +
+  "Digital Logic Simulator: Your user interface can display an embedded digital circuit simulator using Digitaljs syntax  with the language set to 'circuit. Make sure to include properties for devices, connectors, subcircuits even if they are blank. " +
+  "QuickChart.io Elements: Your user interface now renders Sparklines, Progress Bars, and QR Codes as markdown images using QuickChart.io. " +
+  "Raw Values: If the user wants to see raw values, set the language of the markdown to 'text'. " +
   "You are a helpful assistant."
 }
 
