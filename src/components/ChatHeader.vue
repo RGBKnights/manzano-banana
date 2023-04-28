@@ -3,6 +3,7 @@
     <div>
       <span class="font-bold italic text-emerald-600 dark:text-emerald-500 text-2xl underlined underline-part1">Manzano</span><span class="text-amber-500 drk:text-amber-400 font-bold underlined underline-part2"> Banana</span>
     </div>
+    <div class="text-xs pt-5 pl-3"> v1.1</div>
   </div>
 </template>
 
